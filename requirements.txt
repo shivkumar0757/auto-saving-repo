@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+pydantic
+intervaltree
+numpy
+psutil
+pytest
+httpx
