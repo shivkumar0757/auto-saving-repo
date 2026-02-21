@@ -41,14 +41,12 @@ def parse(expenses: List[Expense]) -> List[TransactionData]:
     ceilings_arr = ceiling(amounts_arr)
     remanents_arr = remanent(amounts_arr, ceilings_arr)
 
-    result: List[TransactionData] = []
-    for i, e in enumerate(expenses):
-        result.append(
-            TransactionData(
-                date=e.date,
-                amount=float(amounts_arr[i]),
-                ceiling=float(ceilings_arr[i]),
-                remanent=float(remanents_arr[i]),
-            )
+    return [
+        TransactionData(
+            date=e.date,
+            amount=float(amounts_arr[i]),
+            ceiling=float(ceilings_arr[i]),
+            remanent=float(remanents_arr[i]),
         )
-    return result
+        for i, e in enumerate(expenses)
+    ]

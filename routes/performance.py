@@ -18,6 +18,13 @@ from app.models import PerformanceResponse
 router = APIRouter()
 
 
+def _format_uptime(uptime: timedelta) -> str:
+    """Format a timedelta as 'YYYY-MM-DD HH:mm:ss.SSS' using epoch as base."""
+    dt = datetime(1970, 1, 1) + uptime
+    ms = dt.microsecond // 1000
+    return dt.strftime("%Y-%m-%d %H:%M:%S") + f".{ms:03d}"
+
+
 @router.get("/performance", response_model=PerformanceResponse)
 def performance():
     """
@@ -30,12 +37,7 @@ def performance():
     now = datetime.now(timezone.utc).replace(tzinfo=None)
     uptime = now - _main.START_TIME.replace(tzinfo=None)
 
-    # Format uptime as "YYYY-MM-DD HH:mm:ss.SSS"
-    # uptime is a timedelta; we compute a base datetime from epoch
-    base = datetime(1970, 1, 1)
-    uptime_dt = base + uptime
-    ms = uptime_dt.microsecond // 1000
-    time_str = uptime_dt.strftime("%Y-%m-%d %H:%M:%S") + f".{ms:03d}"
+    time_str = _format_uptime(uptime)
 
     # Memory in MB -- "XX.XX" format, no unit suffix
     mem_info = _main.PROCESS.memory_info()
