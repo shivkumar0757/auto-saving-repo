@@ -189,7 +189,7 @@ class FilterRequest(BaseModel):
     @classmethod
     def check_wage(cls, v: object) -> float:
         if v is None:
-            raise ValueError("Wage must be a positive number")
+            raise ValueError("Wage is required")
         val = float(v)
         if val <= 0:
             raise ValueError("Wage must be a positive number")
@@ -225,7 +225,7 @@ class ReturnsRequest(BaseModel):
     @classmethod
     def check_wage(cls, v: object) -> float:
         if v is None:
-            raise ValueError("Wage must be a positive number")
+            raise ValueError("Wage is required")
         val = float(v)
         if val <= 0:
             raise ValueError("Wage must be a positive number")

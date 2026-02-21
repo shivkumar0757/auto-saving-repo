@@ -15,6 +15,7 @@ Note on duplicate key:
 """
 from __future__ import annotations
 
+from datetime import datetime
 from typing import List, Optional, Tuple
 
 from app.models import TransactionData
@@ -38,7 +39,7 @@ def validate(
     """
     valid: List[TransactionData] = []
     invalid: List[Tuple[TransactionData, str]] = []
-    seen: set = set()  # set of datetime objects (date-only key per spec)
+    seen: set[datetime] = set()  # set of datetime objects (date-only key per spec)
 
     for txn in transactions:
         # Rule 1 -- negative amount
