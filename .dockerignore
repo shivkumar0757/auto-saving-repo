@@ -1,0 +1,23 @@
+# Python
+venv/
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+
+# Dev/editor
+.git/
+.gitignore
+.env
+.vscode/
+.idea/
+
+# Docs (not needed at runtime)
+docs/
+
+# Test files (not needed at runtime)
+test/

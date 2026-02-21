@@ -48,10 +48,10 @@ Server runs on **port 5477**:
 
 ```bash
 # Build
-docker build -t blk-hacking-ind-name-lastname .
+docker build -t blk-hacking-ind-shiv-kumar .
 
 # Run
-docker run -d -p 5477:5477 blk-hacking-ind-name-lastname
+docker run -d -p 5477:5477 blk-hacking-ind-shiv-kumar
 ```
 
 ---
