@@ -38,7 +38,6 @@ app = FastAPI(
 
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError) -> JSONResponse:
-    # Extract the first meaningful error message
     errors = exc.errors()
     if errors:
         # Pydantic v2 stores the message in "msg"

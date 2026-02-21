@@ -10,10 +10,10 @@ Config dict pattern (Strategy pattern):
   INDEX_CONFIG = {"rate": 0.1449, "use_tax": False}
 
 Rules:
-  t = max(60 - age, 5)          -- never let t be zero
-  A      = P * (1 + r)^t
-  A_real = A / (1 + inflation/100)^t
-  profit = A_real - P
+  t            = max(60 - age, 5)          -- never let t be zero
+  future_value = principal * (1 + r)^t
+  real_value   = future_value / (1 + inflation/100)^t
+  profit       = real_value - principal
   wage input is monthly; annual_income = wage * 12
 """
 from __future__ import annotations
@@ -99,14 +99,14 @@ def calc_returns(
     annual_income = wage * 12.0
 
     # Vectorised compound interest + inflation adjustment
-    P = np.array([ks["amount"] for ks in k_sums], dtype=np.float64)
-    A = P * (1.0 + rate) ** t
-    A_real = A / (1.0 + inflation / 100.0) ** t
-    profit_arr = A_real - P
+    principal = np.array([ks["amount"] for ks in k_sums], dtype=np.float64)
+    future_value = principal * (1.0 + rate) ** t
+    real_value = future_value / (1.0 + inflation / 100.0) ** t
+    profit_arr = real_value - principal
 
     results = []
     for i, ks in enumerate(k_sums):
-        p_val = float(P[i])
+        p_val = float(principal[i])
         profit = round(float(profit_arr[i]), 2)
 
         tax_benefit = 0.0

@@ -47,11 +47,10 @@ def validate(
             continue
 
         # Rule 2 -- duplicate (key = date)
-        key = txn.date
-        if key in seen:
+        if txn.date in seen:
             invalid.append((txn, MSG_DUPLICATE))
             continue
-        seen.add(key)
+        seen.add(txn.date)
 
         # Rule 3 -- wage check (EP2 only)
         if check_wage and wage is not None and txn.amount > wage:
