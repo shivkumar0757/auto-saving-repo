@@ -189,9 +189,9 @@ class ValidatorRequest(BaseModel):
 class FilterRequest(BaseModel):
     wage: float | None = Field(default=None, validate_default=True)
     transactions: list[Expense]
-    q: list[QPeriod] = []
-    p: list[PPeriod] = []
-    k: list[KPeriod] = []
+    q: list[QPeriod] = Field(default_factory=list)
+    p: list[PPeriod] = Field(default_factory=list)
+    k: list[KPeriod] = Field(default_factory=list)
 
     @field_validator("wage", mode="before")
     @classmethod
@@ -209,8 +209,8 @@ class ReturnsRequest(BaseModel):
     wage: float | None = Field(default=None, validate_default=True)
     inflation: float | None = Field(default=None, validate_default=True)
     transactions: list[Expense]
-    q: list[QPeriod] = []
-    p: list[PPeriod] = []
+    q: list[QPeriod] = Field(default_factory=list)
+    p: list[PPeriod] = Field(default_factory=list)
     k: list[KPeriod] | None = Field(default=None, validate_default=True)
 
     @field_validator("age", mode="before")
@@ -219,7 +219,7 @@ class ReturnsRequest(BaseModel):
         if v is None:
             raise ValueError("Age is required and must be a whole number")
         if isinstance(v, bool):
-            raise ValueError("Age is required and must be a whole number")
+            raise ValueError("Age must be a whole number")
         if isinstance(v, float) and v == int(v):
             v = int(v)
         if not isinstance(v, int):

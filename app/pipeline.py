@@ -39,7 +39,7 @@ def process(
     IntervalTrees for q and p are built ONCE here, then passed down.
     tag_k builds its own tree internally (small, bounded cost).
 
-    When q/p/k are empty lists, the corresponding steps are no-ops.
+    When q/p/k are None (default) or empty lists, the corresponding steps are no-ops.
 
     Returns:
         valid   -- processed and filtered TransactionData list
