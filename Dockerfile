@@ -1,4 +1,4 @@
-# docker build -t blk-hacking-ind-name-lastname .
+# docker build -t blk-hacking-ind-shiv-kumar .
 
 # python:3.12-slim chosen: Debian-based minimal image (~150MB vs ~1GB full),
 # includes only what's needed to run Python; no build tools, docs, or test
