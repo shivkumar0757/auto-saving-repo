@@ -22,9 +22,9 @@ from app.utils.validator import validate
 
 def process(
     expenses: List[Expense],
-    q: List[QPeriod] = [],
-    p: List[PPeriod] = [],
-    k: List[KPeriod] = [],
+    q: Optional[List[QPeriod]] = None,
+    p: Optional[List[PPeriod]] = None,
+    k: Optional[List[KPeriod]] = None,
     wage: Optional[float] = None,
     check_wage: bool = False,
 ) -> Tuple[List[TransactionData], List[Tuple[TransactionData, str]]]:
@@ -47,6 +47,10 @@ def process(
         valid   -- processed and filtered TransactionData list
         invalid -- list of (TransactionData, error_message)
     """
+    q = q or []
+    p = p or []
+    k = k or []
+
     # Step 1: parse
     transactions = parse(expenses)
 
