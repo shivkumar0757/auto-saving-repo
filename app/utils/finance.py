@@ -102,12 +102,12 @@ def calc_returns(
     principal = np.array([ks["amount"] for ks in k_sums], dtype=np.float64)
     future_value = principal * (1.0 + rate) ** t
     real_value = future_value / (1.0 + inflation / 100.0) ** t
-    profit_arr = real_value - principal
+    profits = real_value - principal
 
     results = []
     for i, ks in enumerate(k_sums):
         amount = float(principal[i])
-        profit = round(float(profit_arr[i]), 2)
+        profit = round(float(profits[i]), 2)
 
         tax_benefit = 0.0
         if use_tax:

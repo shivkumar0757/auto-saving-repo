@@ -224,10 +224,9 @@ class ReturnsRequest(BaseModel):
             v = int(v)
         if not isinstance(v, int):
             raise ValueError("Age is required and must be a whole number")
-        val = int(v)
-        if val <= 0:
+        if v <= 0:
             raise ValueError("Age must be a positive number")
-        return val
+        return v
 
     @field_validator("wage", mode="before")
     @classmethod

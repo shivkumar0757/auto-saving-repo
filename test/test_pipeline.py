@@ -134,7 +134,7 @@ class TestPipelineEP4:
             _expense("2023-07-01 21:59:00", 620),
             _expense("2023-10-12 20:15:30", 250),
             _expense("2023-12-17 08:09:45", 480),
-            _expense("2023-12-17 08:09:45", -10),  # duplicate date, also negative
+            _expense("2023-12-17 08:09:45", -10),  # negative → caught by rule 1 before duplicate check
         ]
         q = [_qp(0, "2023-07-01 00:00:00", "2023-07-31 23:59:59")]
         p = [_pp(25, "2023-10-01 08:00:00", "2023-12-31 19:59:59")]

@@ -10,8 +10,9 @@ validate(transactions, wage=None, check_wage=False)
   Returns: (valid: list[TransactionData], invalid: list[tuple[TransactionData, str]])
 
 Note on duplicate key:
-  The spec states timestamps are globally unique (t_i != t_j), so date alone
-  is the duplicate key. We use a set of datetime objects -- O(1) lookup.
+  PRD E014 triggers on matching date+amount, but spec §7 guarantees all
+  timestamps are globally unique (t_i != t_j) — so date alone uniquely
+  identifies every transaction. We use a set of datetime objects -- O(1) lookup.
 """
 from __future__ import annotations
 
