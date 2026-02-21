@@ -1,12 +1,10 @@
 """routes/validator.py -- EP2: Transaction Validator (POST /transactions:validator)"""
 from __future__ import annotations
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter
 
 from app.models import (
-    FilteredTransactionOut,
     InvalidTransactionOut,
-    Transaction,
     TransactionData,
     TransactionOut,
     ValidatorRequest,
