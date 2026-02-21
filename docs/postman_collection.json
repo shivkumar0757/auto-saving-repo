@@ -1,0 +1,167 @@
+{
+  "info": {
+    "name": "BlackRock Auto-Savings API",
+    "_postman_id": "00000000-0000-0000-0000-000000000001",
+    "description": "Collection for all BlackRock challenge endpoints with examples from the spec.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "transactions:parse",
+      "item": [
+        {
+          "name": "Example - Parse Transactions",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "accept", "value": "application/json" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "http://localhost:5477/blackrock/challenge/v1/transactions:parse",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5477",
+              "path": ["blackrock", "challenge", "v1", "transactions:parse"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"date\": \"2023-10-12 20:15:30\",\n    \"amount\": 250\n  },\n  {\n    \"date\": \"2023-02-28 15:49:20\",\n    \"amount\": 375\n  },\n  {\n    \"date\": \"2023-07-15 10:30:00\",\n    \"amount\": 620\n  },\n  {\n    \"date\": \"2023-12-17 19:45:50\",\n    \"amount\": 480\n  }\n]"
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "transactions:validator",
+      "item": [
+        {
+          "name": "Example - Validator with Negative Amount",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "accept", "value": "application/json" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "http://localhost:5477/blackrock/challenge/v1/transactions:validator",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5477",
+              "path": ["blackrock", "challenge", "v1", "transactions:validator"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"wage\": 10000,\n  \"transactions\": [\n    {\n      \"date\": \"2023-10-12 20:15:30\",\n      \"amount\": 250,\n      \"ceiling\": 300,\n      \"remanent\": 50\n    },\n    {\n      \"date\": \"2023-02-28 15:49:20\",\n      \"amount\": -375,\n      \"ceiling\": 400,\n      \"remanent\": 25\n    }\n  ]\n}"
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "transactions:filter",
+      "item": [
+        {
+          "name": "Example - Filter with q, p, k and invalids",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "accept", "value": "application/json" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "http://localhost:5477/blackrock/challenge/v1/transactions:filter",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5477",
+              "path": ["blackrock", "challenge", "v1", "transactions:filter"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"wage\": 10000,\n  \"transactions\": [\n    {\n      \"date\": \"2023-10-12 20:15:30\",\n      \"amount\": 250\n    },\n    {\n      \"date\": \"2023-02-28 15:49:20\",\n      \"amount\": 375\n    },\n    {\n      \"date\": \"2023-07-15 10:30:00\",\n      \"amount\": 620\n    },\n    {\n      \"date\": \"2023-12-17 19:45:50\",\n      \"amount\": -480\n    },\n    {\n      \"date\": \"2023-10-12 20:15:30\",\n      \"amount\": 250\n    }\n  ],\n  \"q\": [\n    {\n      \"fixed\": 0,\n      \"start\": \"2023-07-01 00:00:00\",\n      \"end\": \"2023-07-31 23:59:59\"\n    }\n  ],\n  \"p\": [\n    {\n      \"extra\": 25,\n      \"start\": \"2023-10-01 00:00:00\",\n      \"end\": \"2023-12-31 23:59:59\"\n    }\n  ],\n  \"k\": [\n    {\n      \"start\": \"2023-03-01 00:00:00\",\n      \"end\": \"2023-11-30 23:59:59\"\n    },\n    {\n      \"start\": \"2023-01-01 00:00:00\",\n      \"end\": \"2023-12-31 23:59:59\"\n    }\n  ]\n}"
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "returns:index",
+      "item": [
+        {
+          "name": "Example - Returns Index Fund",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "accept", "value": "application/json" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "http://localhost:5477/blackrock/challenge/v1/returns:index",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5477",
+              "path": ["blackrock", "challenge", "v1", "returns:index"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"age\": 25,\n  \"wage\": 10000,\n  \"inflation\": 4.0,\n  \"transactions\": [\n    {\n      \"date\": \"2023-10-12 20:15:30\",\n      \"amount\": 250\n    },\n    {\n      \"date\": \"2023-02-28 15:49:20\",\n      \"amount\": 375\n    },\n    {\n      \"date\": \"2023-07-15 10:30:00\",\n      \"amount\": 620\n    },\n    {\n      \"date\": \"2023-12-17 19:45:50\",\n      \"amount\": 480\n    },\n    {\n      \"date\": \"2023-11-05 10:00:00\",\n      \"amount\": -10\n    }\n  ],\n  \"q\": [\n    {\n      \"fixed\": 0,\n      \"start\": \"2023-07-01 00:00:00\",\n      \"end\": \"2023-07-31 23:59:59\"\n    }\n  ],\n  \"p\": [\n    {\n      \"extra\": 25,\n      \"start\": \"2023-10-01 00:00:00\",\n      \"end\": \"2023-12-31 23:59:59\"\n    }\n  ],\n  \"k\": [\n    {\n      \"start\": \"2023-03-01 00:00:00\",\n      \"end\": \"2023-11-30 23:59:59\"\n    },\n    {\n      \"start\": \"2023-01-01 00:00:00\",\n      \"end\": \"2023-12-31 23:59:59\"\n    }\n  ]\n}"
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "returns:nps",
+      "item": [
+        {
+          "name": "Example - Returns NPS",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "accept", "value": "application/json" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "http://localhost:5477/blackrock/challenge/v1/returns:nps",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5477",
+              "path": ["blackrock", "challenge", "v1", "returns:nps"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"age\": 25,\n  \"wage\": 10000,\n  \"inflation\": 4.0,\n  \"transactions\": [\n    {\n      \"date\": \"2023-10-12 20:15:30\",\n      \"amount\": 250\n    },\n    {\n      \"date\": \"2023-02-28 15:49:20\",\n      \"amount\": 375\n    },\n    {\n      \"date\": \"2023-07-15 10:30:00\",\n      \"amount\": 620\n    },\n    {\n      \"date\": \"2023-12-17 19:45:50\",\n      \"amount\": 480\n    },\n    {\n      \"date\": \"2023-11-05 10:00:00\",\n      \"amount\": -10\n    }\n  ],\n  \"q\": [\n    {\n      \"fixed\": 0,\n      \"start\": \"2023-07-01 00:00:00\",\n      \"end\": \"2023-07-31 23:59:59\"\n    }\n  ],\n  \"p\": [\n    {\n      \"extra\": 25,\n      \"start\": \"2023-10-01 00:00:00\",\n      \"end\": \"2023-12-31 23:59:59\"\n    }\n  ],\n  \"k\": [\n    {\n      \"start\": \"2023-03-01 00:00:00\",\n      \"end\": \"2023-11-30 23:59:59\"\n    },\n    {\n      \"start\": \"2023-01-01 00:00:00\",\n      \"end\": \"2023-12-31 23:59:59\"\n    }\n  ]\n}"
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "performance",
+      "item": [
+        {
+          "name": "Example - Performance",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "accept", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "http://localhost:5477/blackrock/challenge/v1/performance",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5477",
+              "path": ["blackrock", "challenge", "v1", "performance"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
