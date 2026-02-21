@@ -8,9 +8,12 @@ The only difference is the config dict (rate + use_tax flag).
 """
 from __future__ import annotations
 
+from typing import Any
+
 from fastapi import APIRouter
 
 from app.models import (
+    DATE_FORMAT,
     ReturnsRequest,
     ReturnsResponse,
     SavingResult,
@@ -21,10 +24,8 @@ from app.utils.periods import sum_by_k
 
 router = APIRouter()
 
-DATE_FMT = "%Y-%m-%d %H:%M:%S"
 
-
-def _run_returns(body: ReturnsRequest, config: dict) -> ReturnsResponse:
+def _run_returns(body: ReturnsRequest, config: dict[str, Any]) -> ReturnsResponse:
     """
     Shared logic for both returns endpoints.
 
@@ -68,8 +69,8 @@ def _run_returns(body: ReturnsRequest, config: dict) -> ReturnsResponse:
         totalCeiling=total_ceiling,
         savingsByDates=[
             SavingResult(
-                start=s["start"].strftime(DATE_FMT),
-                end=s["end"].strftime(DATE_FMT),
+                start=s["start"].strftime(DATE_FORMAT),
+                end=s["end"].strftime(DATE_FORMAT),
                 amount=s["amount"],
                 profit=s["profit"],
                 taxBenefit=s["taxBenefit"],

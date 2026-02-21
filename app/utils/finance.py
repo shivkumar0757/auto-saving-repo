@@ -106,12 +106,12 @@ def calc_returns(
 
     results = []
     for i, ks in enumerate(k_sums):
-        p_val = float(principal[i])
+        amount = float(principal[i])
         profit = round(float(profit_arr[i]), 2)
 
         tax_benefit = 0.0
         if use_tax:
-            deduction = nps_deduction(p_val, annual_income)
+            deduction = nps_deduction(amount, annual_income)
             tax_before = calc_tax(annual_income)
             tax_after = calc_tax(annual_income - deduction)
             tax_benefit = round(tax_before - tax_after, 2)
@@ -120,7 +120,7 @@ def calc_returns(
             {
                 "start": ks["start"],
                 "end": ks["end"],
-                "amount": round(p_val, 2),
+                "amount": round(amount, 2),
                 "profit": profit,
                 "taxBenefit": tax_benefit,
             }
