@@ -24,6 +24,7 @@ from app.models import KPeriod, PPeriod, QPeriod, TransactionData
 
 # Small epsilon to convert inclusive [start, end] to half-open [start, end+eps)
 _EPS = timedelta(microseconds=1)
+_EPS_S: float = _EPS.total_seconds()
 
 
 def _ts(dt: datetime) -> float:
@@ -67,7 +68,7 @@ def apply_q(
     """
     for txn in transactions:
         ts = _ts(txn.date)
-        matches = q_tree.overlap(ts, ts + _EPS.total_seconds())
+        matches = q_tree.overlap(ts, ts + _EPS_S)
         if not matches:
             continue
 
@@ -97,7 +98,7 @@ def apply_p(
     """
     for txn in transactions:
         ts = _ts(txn.date)
-        matches = p_tree.overlap(ts, ts + _EPS.total_seconds())
+        matches = p_tree.overlap(ts, ts + _EPS_S)
         if not matches:
             continue
 
@@ -124,11 +125,10 @@ def tag_k(
 
     k_tree = build_tree(k_periods)
     result: List[TransactionData] = []
-    eps_s = _EPS.total_seconds()
 
     for txn in transactions:
         ts = _ts(txn.date)
-        if k_tree.overlap(ts, ts + eps_s):
+        if k_tree.overlap(ts, ts + _EPS_S):
             txn.inkPeriod = True
             result.append(txn)
         # else: silently dropped

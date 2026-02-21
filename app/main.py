@@ -16,6 +16,12 @@ from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
+from routes import filter as _filter_route
+from routes import parse as _parse_route
+from routes import performance as _perf_route
+from routes import returns as _returns_route
+from routes import validator as _validator_route
+
 # Singleton performance tracking -- captured once at boot
 START_TIME: datetime = datetime.now(timezone.utc)
 PROCESS: psutil.Process = psutil.Process()
@@ -51,12 +57,6 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
 # ---------------------------------------------------------------------------
 
 BASE = "/blackrock/challenge/v1"
-
-from routes import parse as _parse_route
-from routes import validator as _validator_route
-from routes import filter as _filter_route
-from routes import returns as _returns_route
-from routes import performance as _perf_route
 
 app.include_router(_parse_route.router, prefix=BASE)
 app.include_router(_validator_route.router, prefix=BASE)

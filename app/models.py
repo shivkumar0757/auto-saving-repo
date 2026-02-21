@@ -13,7 +13,6 @@ from pydantic.json_schema import JsonSchemaValue
 from pydantic_core import core_schema as _pcs
 
 DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
-DATE_FORMAT_OUT = "%Y-%m-%d %H:%M:%S"
 
 
 def _parse_date(v: object) -> datetime:
@@ -41,7 +40,7 @@ class _DateTimeFieldType:
         return _pcs.no_info_plain_validator_function(
             _parse_date,
             serialization=_pcs.plain_serializer_function_ser_schema(
-                lambda v: v.strftime(DATE_FORMAT_OUT) if isinstance(v, datetime) else str(v),
+                lambda v: v.strftime(DATE_FORMAT) if isinstance(v, datetime) else str(v),
                 info_arg=False,
             ),
         )
@@ -63,10 +62,10 @@ DateTimeField = _DateTimeFieldType
 
 
 def _fmt_date(dt: datetime) -> str:
-    return dt.strftime(DATE_FORMAT_OUT)
+    return dt.strftime(DATE_FORMAT)
 
 
-def _r(v: float) -> float:
+def _round2(v: float) -> float:
     return round(float(v), 2)
 
 
@@ -211,7 +210,7 @@ class ReturnsRequest(BaseModel):
     def check_age(cls, v: object) -> int:
         if v is None:
             raise ValueError("Age is required and must be a whole number")
-        if not isinstance(v, (int,)) or isinstance(v, bool):
+        if not isinstance(v, int) or isinstance(v, bool):
             # allow int-valued floats
             if isinstance(v, float) and v == int(v):
                 v = int(v)
@@ -264,9 +263,9 @@ class TransactionOut(BaseModel):
     def from_txn(cls, t: "TransactionData") -> "TransactionOut":
         return cls(
             date=_fmt_date(t.date),
-            amount=_r(t.amount),
-            ceiling=_r(t.ceiling),
-            remanent=_r(t.remanent),
+            amount=_round2(t.amount),
+            ceiling=_round2(t.ceiling),
+            remanent=_round2(t.remanent),
         )
 
 
@@ -281,9 +280,9 @@ class FilteredTransactionOut(BaseModel):
     def from_txn(cls, t: "TransactionData") -> "FilteredTransactionOut":
         return cls(
             date=_fmt_date(t.date),
-            amount=_r(t.amount),
-            ceiling=_r(t.ceiling),
-            remanent=_r(t.remanent),
+            amount=_round2(t.amount),
+            ceiling=_round2(t.ceiling),
+            remanent=_round2(t.remanent),
             inkPeriod=getattr(t, "inkPeriod", False),
         )
 
@@ -299,9 +298,9 @@ class InvalidTransactionOut(BaseModel):
     def from_ep2(cls, t: "TransactionData", message: str) -> "InvalidTransactionOut":
         return cls(
             date=_fmt_date(t.date),
-            amount=_r(t.amount),
-            ceiling=_r(t.ceiling),
-            remanent=_r(t.remanent),
+            amount=_round2(t.amount),
+            ceiling=_round2(t.ceiling),
+            remanent=_round2(t.remanent),
             message=message,
         )
 
@@ -309,7 +308,7 @@ class InvalidTransactionOut(BaseModel):
     def from_ep3(cls, t: "TransactionData", message: str) -> "InvalidTransactionOut":
         return cls(
             date=_fmt_date(t.date),
-            amount=_r(t.amount),
+            amount=_round2(t.amount),
             message=message,
         )
 
