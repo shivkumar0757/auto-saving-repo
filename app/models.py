@@ -6,9 +6,15 @@ All output doubles are rounded to 2 decimal places.
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Any, List, Optional
+from typing import Any
 
-from pydantic import BaseModel, Field, GetJsonSchemaHandler, field_validator, model_validator
+from pydantic import (
+    BaseModel,
+    Field,
+    GetJsonSchemaHandler,
+    field_validator,
+    model_validator,
+)
 from pydantic.json_schema import JsonSchemaValue
 from pydantic_core import core_schema as _pcs
 
@@ -40,7 +46,9 @@ class _DateTimeFieldType:
         return _pcs.no_info_plain_validator_function(
             _parse_date,
             serialization=_pcs.plain_serializer_function_ser_schema(
-                lambda v: v.strftime(DATE_FORMAT) if isinstance(v, datetime) else str(v),
+                lambda v: (
+                    v.strftime(DATE_FORMAT) if isinstance(v, datetime) else str(v)
+                ),
                 info_arg=False,
             ),
         )
@@ -115,7 +123,7 @@ class QPeriod(BaseModel):
         return val
 
     @model_validator(mode="after")
-    def check_order(self) -> "QPeriod":
+    def check_order(self) -> QPeriod:
         if self.start > self.end:
             raise ValueError("Invalid q period: start must be before end")
         return self
@@ -135,7 +143,7 @@ class PPeriod(BaseModel):
         return val
 
     @model_validator(mode="after")
-    def check_order(self) -> "PPeriod":
+    def check_order(self) -> PPeriod:
         if self.start > self.end:
             raise ValueError("Invalid p period: start must be before end")
         return self
@@ -146,7 +154,7 @@ class KPeriod(BaseModel):
     end: DateTimeField
 
     @model_validator(mode="after")
-    def check_order(self) -> "KPeriod":
+    def check_order(self) -> KPeriod:
         if self.start > self.end:
             raise ValueError("Invalid k period: start must be before end")
         return self
@@ -157,8 +165,8 @@ class KPeriod(BaseModel):
 # ---------------------------------------------------------------------------
 
 class ValidatorRequest(BaseModel):
-    wage: Optional[float] = Field(default=None, validate_default=True)
-    transactions: Optional[List[Transaction]] = Field(default=None, validate_default=True)
+    wage: float | None = Field(default=None, validate_default=True)
+    transactions: list[Transaction] | None = Field(default=None, validate_default=True)
 
     @field_validator("wage", mode="before")
     @classmethod
@@ -179,11 +187,11 @@ class ValidatorRequest(BaseModel):
 
 
 class FilterRequest(BaseModel):
-    wage: Optional[float] = Field(default=None, validate_default=True)
-    transactions: List[Expense]
-    q: List[QPeriod] = []
-    p: List[PPeriod] = []
-    k: List[KPeriod] = []
+    wage: float | None = Field(default=None, validate_default=True)
+    transactions: list[Expense]
+    q: list[QPeriod] = []
+    p: list[PPeriod] = []
+    k: list[KPeriod] = []
 
     @field_validator("wage", mode="before")
     @classmethod
@@ -197,13 +205,13 @@ class FilterRequest(BaseModel):
 
 
 class ReturnsRequest(BaseModel):
-    age: Optional[int] = Field(default=None, validate_default=True)
-    wage: Optional[float] = Field(default=None, validate_default=True)
-    inflation: Optional[float] = Field(default=None, validate_default=True)
-    transactions: List[Expense]
-    q: List[QPeriod] = []
-    p: List[PPeriod] = []
-    k: Optional[List[KPeriod]] = Field(default=None, validate_default=True)
+    age: int | None = Field(default=None, validate_default=True)
+    wage: float | None = Field(default=None, validate_default=True)
+    inflation: float | None = Field(default=None, validate_default=True)
+    transactions: list[Expense]
+    q: list[QPeriod] = []
+    p: list[PPeriod] = []
+    k: list[KPeriod] | None = Field(default=None, validate_default=True)
 
     @field_validator("age", mode="before")
     @classmethod
@@ -260,7 +268,7 @@ class TransactionOut(BaseModel):
     remanent: float
 
     @classmethod
-    def from_txn(cls, t: "TransactionData") -> "TransactionOut":
+    def from_txn(cls, t: TransactionData) -> TransactionOut:
         return cls(
             date=_fmt_date(t.date),
             amount=_round2(t.amount),
@@ -277,7 +285,7 @@ class FilteredTransactionOut(BaseModel):
     inkPeriod: bool
 
     @classmethod
-    def from_txn(cls, t: "TransactionData") -> "FilteredTransactionOut":
+    def from_txn(cls, t: TransactionData) -> FilteredTransactionOut:
         return cls(
             date=_fmt_date(t.date),
             amount=_round2(t.amount),
@@ -291,11 +299,11 @@ class InvalidTransactionOut(BaseModel):
     date: str
     amount: float
     message: str
-    ceiling: Optional[float] = None
-    remanent: Optional[float] = None
+    ceiling: float | None = None
+    remanent: float | None = None
 
     @classmethod
-    def from_ep2(cls, t: "TransactionData", message: str) -> "InvalidTransactionOut":
+    def from_ep2(cls, t: TransactionData, message: str) -> InvalidTransactionOut:
         return cls(
             date=_fmt_date(t.date),
             amount=_round2(t.amount),
@@ -305,7 +313,7 @@ class InvalidTransactionOut(BaseModel):
         )
 
     @classmethod
-    def from_ep3(cls, t: "TransactionData", message: str) -> "InvalidTransactionOut":
+    def from_ep3(cls, t: TransactionData, message: str) -> InvalidTransactionOut:
         return cls(
             date=_fmt_date(t.date),
             amount=_round2(t.amount),
@@ -314,13 +322,13 @@ class InvalidTransactionOut(BaseModel):
 
 
 class ValidatorResponse(BaseModel):
-    valid: List[TransactionOut]
-    invalid: List[InvalidTransactionOut]
+    valid: list[TransactionOut]
+    invalid: list[InvalidTransactionOut]
 
 
 class FilterResponse(BaseModel):
-    valid: List[FilteredTransactionOut]
-    invalid: List[InvalidTransactionOut]
+    valid: list[FilteredTransactionOut]
+    invalid: list[InvalidTransactionOut]
 
 
 class SavingResult(BaseModel):
@@ -334,7 +342,7 @@ class SavingResult(BaseModel):
 class ReturnsResponse(BaseModel):
     totalTransactionAmount: float
     totalCeiling: float
-    savingsByDates: List[SavingResult]
+    savingsByDates: list[SavingResult]
 
 
 class PerformanceResponse(BaseModel):

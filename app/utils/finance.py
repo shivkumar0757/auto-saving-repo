@@ -18,7 +18,7 @@ Rules:
 """
 from __future__ import annotations
 
-from typing import Any, Dict, List
+from typing import Any
 
 import numpy as np
 
@@ -64,17 +64,17 @@ def nps_deduction(invested: float, annual_income: float) -> float:
 # Shared returns calculator (NPS + Index Fund via config dict)
 # ---------------------------------------------------------------------------
 
-NPS_CONFIG: Dict[str, Any] = {"rate": 0.0711, "use_tax": True}
-INDEX_CONFIG: Dict[str, Any] = {"rate": 0.1449, "use_tax": False}
+NPS_CONFIG: dict[str, Any] = {"rate": 0.0711, "use_tax": True}
+INDEX_CONFIG: dict[str, Any] = {"rate": 0.1449, "use_tax": False}
 
 
 def calc_returns(
-    k_sums: List[Dict],
+    k_sums: list[dict],
     age: int,
     wage: float,
     inflation: float,
-    config: Dict[str, Any],
-) -> List[Dict]:
+    config: dict[str, Any],
+) -> list[dict]:
     """
     Calculate compound + inflation-adjusted returns for each k window.
 

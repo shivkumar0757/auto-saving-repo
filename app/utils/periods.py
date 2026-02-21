@@ -16,11 +16,11 @@ datetime hashability issues inside intervaltree.
 from __future__ import annotations
 
 from datetime import datetime, timedelta
-from typing import Any, Dict, List, Tuple
+from typing import Any
 
 from intervaltree import IntervalTree
 
-from app.models import KPeriod, PPeriod, QPeriod, TransactionData
+from app.models import KPeriod, TransactionData
 
 # Small epsilon to convert inclusive [start, end] to half-open [start, end+eps)
 _EPS = timedelta(microseconds=1)
@@ -32,7 +32,7 @@ def _ts(dt: datetime) -> float:
     return dt.timestamp()
 
 
-def build_tree(periods: List[Any]) -> IntervalTree:
+def build_tree(periods: list[Any]) -> IntervalTree:
     """
     Build an IntervalTree from a list of QPeriod, PPeriod, or KPeriod objects.
 
@@ -52,9 +52,9 @@ def build_tree(periods: List[Any]) -> IntervalTree:
 
 
 def apply_q(
-    transactions: List[TransactionData],
+    transactions: list[TransactionData],
     q_tree: IntervalTree,
-) -> List[TransactionData]:
+) -> list[TransactionData]:
     """
     Apply q-period overrides to remanent.
 
@@ -84,9 +84,9 @@ def apply_q(
 
 
 def apply_p(
-    transactions: List[TransactionData],
+    transactions: list[TransactionData],
     p_tree: IntervalTree,
-) -> List[TransactionData]:
+) -> list[TransactionData]:
     """
     Apply p-period additions to remanent.
 
@@ -109,9 +109,9 @@ def apply_p(
 
 
 def tag_k(
-    transactions: List[TransactionData],
-    k_periods: List[KPeriod],
-) -> List[TransactionData]:
+    transactions: list[TransactionData],
+    k_periods: list[KPeriod],
+) -> list[TransactionData]:
     """
     Tag transactions with inkPeriod=True if they fall in ANY k window.
     Transactions that fall in NO k window are silently dropped.
@@ -124,7 +124,7 @@ def tag_k(
         return []
 
     k_tree = build_tree(k_periods)
-    result: List[TransactionData] = []
+    result: list[TransactionData] = []
 
     for txn in transactions:
         ts = _ts(txn.date)
@@ -137,9 +137,9 @@ def tag_k(
 
 
 def sum_by_k(
-    transactions: List[TransactionData],
-    k_periods: List[KPeriod],
-) -> List[Dict]:
+    transactions: list[TransactionData],
+    k_periods: list[KPeriod],
+) -> list[dict]:
     """
     Sum remanents per k window. Each transaction may appear in multiple k windows.
 
@@ -150,7 +150,6 @@ def sum_by_k(
     against every k window independently (EP4 semantics).
     """
     results = []
-    eps_s = _EPS.total_seconds()
 
     for kp in k_periods:
         k_start_ts = _ts(kp.start)

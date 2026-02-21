@@ -10,8 +10,6 @@ parse(expenses) -> list[TransactionData]
 """
 from __future__ import annotations
 
-from typing import List
-
 import numpy as np
 
 from app.models import Expense, TransactionData
@@ -27,7 +25,7 @@ def remanent(amounts: np.ndarray, ceilings: np.ndarray) -> np.ndarray:
     return ceilings - amounts
 
 
-def parse(expenses: List[Expense]) -> List[TransactionData]:
+def parse(expenses: list[Expense]) -> list[TransactionData]:
     """
     Convert a list of Expense objects into TransactionData with ceiling/remanent.
 

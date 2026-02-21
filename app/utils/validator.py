@@ -16,7 +16,6 @@ Note on duplicate key:
 from __future__ import annotations
 
 from datetime import datetime
-from typing import List, Optional, Tuple
 
 from app.models import TransactionData
 
@@ -26,10 +25,10 @@ MSG_WAGE = "Amount exceeds monthly wage"
 
 
 def validate(
-    transactions: List[TransactionData],
-    wage: Optional[float] = None,
+    transactions: list[TransactionData],
+    wage: float | None = None,
     check_wage: bool = False,
-) -> Tuple[List[TransactionData], List[Tuple[TransactionData, str]]]:
+) -> tuple[list[TransactionData], list[tuple[TransactionData, str]]]:
     """
     Validate transactions in one pass using a hash set for duplicate detection.
 
@@ -37,8 +36,8 @@ def validate(
         valid   -- list of TransactionData that passed all checks
         invalid -- list of (TransactionData, error_message) for failed ones
     """
-    valid: List[TransactionData] = []
-    invalid: List[Tuple[TransactionData, str]] = []
+    valid: list[TransactionData] = []
+    invalid: list[tuple[TransactionData, str]] = []
     seen: set[datetime] = set()  # set of datetime objects (date-only key per spec)
 
     for txn in transactions:

@@ -14,7 +14,6 @@ from app.models import (
     ReturnsRequest,
     ReturnsResponse,
     SavingResult,
-    TransactionData,
 )
 from app.pipeline import process
 from app.utils.finance import INDEX_CONFIG, NPS_CONFIG, calc_returns

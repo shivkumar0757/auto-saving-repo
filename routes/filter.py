@@ -4,9 +4,9 @@ from __future__ import annotations
 from fastapi import APIRouter
 
 from app.models import (
+    FilteredTransactionOut,
     FilterRequest,
     FilterResponse,
-    FilteredTransactionOut,
     InvalidTransactionOut,
 )
 from app.pipeline import process
@@ -14,7 +14,11 @@ from app.pipeline import process
 router = APIRouter()
 
 
-@router.post("/transactions:filter", response_model=FilterResponse, response_model_exclude_none=True)
+@router.post(
+    "/transactions:filter",
+    response_model=FilterResponse,
+    response_model_exclude_none=True,
+)
 def filter_transactions(body: FilterRequest):
     """
     EP3 -- Receives raw expenses (not pre-parsed).

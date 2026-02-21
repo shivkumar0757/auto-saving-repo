@@ -7,7 +7,6 @@ Server runs on port 5477.
 """
 from __future__ import annotations
 
-import sys
 from datetime import datetime, timezone
 
 import psutil

@@ -9,7 +9,7 @@ Time format:   "YYYY-MM-DD HH:mm:ss.SSS" -- milliseconds, no microseconds.
 """
 from __future__ import annotations
 
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timedelta, timezone
 
 from fastapi import APIRouter
 

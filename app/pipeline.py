@@ -12,8 +12,6 @@ Critical rules implemented here:
 """
 from __future__ import annotations
 
-from typing import List, Optional, Tuple
-
 from app.models import Expense, KPeriod, PPeriod, QPeriod, TransactionData
 from app.utils.parser import parse
 from app.utils.periods import apply_p, apply_q, build_tree, tag_k
@@ -21,13 +19,13 @@ from app.utils.validator import validate
 
 
 def process(
-    expenses: List[Expense],
-    q: Optional[List[QPeriod]] = None,
-    p: Optional[List[PPeriod]] = None,
-    k: Optional[List[KPeriod]] = None,
-    wage: Optional[float] = None,
+    expenses: list[Expense],
+    q: list[QPeriod] | None = None,
+    p: list[PPeriod] | None = None,
+    k: list[KPeriod] | None = None,
+    wage: float | None = None,
     check_wage: bool = False,
-) -> Tuple[List[TransactionData], List[Tuple[TransactionData, str]]]:
+) -> tuple[list[TransactionData], list[tuple[TransactionData, str]]]:
     """
     Full processing pipeline.
 
