@@ -88,8 +88,9 @@ class TestPipelineWithPeriods:
         return process(expenses, q=q, p=p, k=k, wage=50000, check_wage=False)
 
     def test_ep3_valid_count(self):
+        # Jul-15 has q_applied=True and remanent=0 → silently excluded per spec
         valid, invalid = self._run_ep3_spec()
-        assert len(valid) == 3
+        assert len(valid) == 2
 
     def test_ep3_invalid_count(self):
         valid, invalid = self._run_ep3_spec()
@@ -99,11 +100,11 @@ class TestPipelineWithPeriods:
         valid, _ = self._run_ep3_spec()
         assert all(t.inkPeriod is True for t in valid)
 
-    def test_ep3_q_applied(self):
-        """Jul 15 (620) should have remanent=0 after q match."""
+    def test_ep3_q_applied_zero_excluded(self):
+        """Jul 15 (620): q sets remanent=0 → excluded from valid (contributes nothing)."""
         valid, _ = self._run_ep3_spec()
-        jul_txn = next(t for t in valid if t.date == datetime(2023, 7, 15, 10, 30, 0))
-        assert jul_txn.remanent == 0.0
+        dates = [t.date for t in valid]
+        assert datetime(2023, 7, 15, 10, 30, 0) not in dates
 
     def test_ep3_p_applied(self):
         """Oct 12 (250): base remanent=50, p extra=30 -> 80"""
@@ -195,10 +196,10 @@ class TestPerformanceEndpoint:
         assert set(data.keys()) == {"time", "memory", "threads"}
 
     def test_time_format(self):
-        """time field must match YYYY-MM-DD HH:mm:ss.SSS (millisecond precision)."""
+        """time field must match HH:mm:ss.SSS (time-only, millisecond precision)."""
         response = _client.get("/blackrock/challenge/v1/performance")
         time_str = response.json()["time"]
-        pattern = r"^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}$"
+        pattern = r"^\d{2}:\d{2}:\d{2}\.\d{3}$"
         assert re.match(pattern, time_str), f"Bad time format: {time_str!r}"
 
     def test_memory_is_string_without_unit(self):

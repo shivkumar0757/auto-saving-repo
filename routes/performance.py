@@ -9,7 +9,7 @@ Time format:   "YYYY-MM-DD HH:mm:ss.SSS" -- milliseconds, no microseconds.
 """
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta, timezone  # datetime used for now()
 
 from fastapi import APIRouter
 
@@ -19,10 +19,12 @@ router = APIRouter()
 
 
 def _format_uptime(uptime: timedelta) -> str:
-    """Format a timedelta as 'YYYY-MM-DD HH:mm:ss.SSS' using epoch as base."""
-    dt = datetime(1970, 1, 1) + uptime
-    ms = dt.microsecond // 1000
-    return dt.strftime("%Y-%m-%d %H:%M:%S") + f".{ms:03d}"
+    """Format a timedelta as 'HH:mm:ss.SSS' (time-only, no date prefix)."""
+    total_seconds = int(uptime.total_seconds())
+    hours, remainder = divmod(total_seconds, 3600)
+    minutes, seconds = divmod(remainder, 60)
+    ms = uptime.microseconds // 1000
+    return f"{hours:02d}:{minutes:02d}:{seconds:02d}.{ms:03d}"
 
 
 @router.get("/performance", response_model=PerformanceResponse)

@@ -79,6 +79,7 @@ def apply_q(
         )
         _, qp = winner.data
         txn.remanent = float(qp.fixed)
+        txn.q_applied = True  # flag: a q period explicitly set this remanent
 
     return transactions
 
@@ -129,6 +130,11 @@ def tag_k(
     for txn in transactions:
         ts = _ts(txn.date)
         if k_tree.overlap(ts, ts + _EPS_S):
+            # Drop transactions where a q period explicitly zeroed the remanent:
+            # they are valid (not errors) but contribute nothing to savings
+            # and the spec example excludes them from the valid output.
+            if txn.q_applied and txn.remanent == 0.0:
+                continue
             txn.inkPeriod = True
             result.append(txn)
         # else: silently dropped

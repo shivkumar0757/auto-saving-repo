@@ -357,7 +357,7 @@ class PerformanceResponse(BaseModel):
 class TransactionData:
     """Lightweight mutable container used inside the processing pipeline."""
 
-    __slots__ = ("date", "amount", "ceiling", "remanent", "inkPeriod")
+    __slots__ = ("date", "amount", "ceiling", "remanent", "inkPeriod", "q_applied")
 
     def __init__(
         self,
@@ -372,3 +372,4 @@ class TransactionData:
         self.ceiling = ceiling
         self.remanent = remanent
         self.inkPeriod = inkPeriod
+        self.q_applied = False  # True if a q period overrode the remanent
