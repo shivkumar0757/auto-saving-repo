@@ -80,12 +80,12 @@ def _run_returns(body: ReturnsRequest, config: dict) -> ReturnsResponse:
 
 
 @router.post("/returns:nps", response_model=ReturnsResponse)
-def returns_nps(body: ReturnsRequest):
+def returns_nps(body: ReturnsRequest) -> ReturnsResponse:
     """EP4a -- NPS returns. Rate = 7.11%, tax benefit applied."""
     return _run_returns(body, NPS_CONFIG)
 
 
 @router.post("/returns:index", response_model=ReturnsResponse)
-def returns_index(body: ReturnsRequest):
+def returns_index(body: ReturnsRequest) -> ReturnsResponse:
     """EP4b -- NIFTY 50 index fund returns. Rate = 14.49%, no tax benefit."""
     return _run_returns(body, INDEX_CONFIG)

@@ -19,7 +19,7 @@ router = APIRouter()
     response_model=FilterResponse,
     response_model_exclude_none=True,
 )
-def filter_transactions(body: FilterRequest):
+def filter_transactions(body: FilterRequest) -> FilterResponse:
     """
     EP3 -- Receives raw expenses (not pre-parsed).
     Applies all period rules internally.

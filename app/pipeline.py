@@ -1,7 +1,7 @@
 """
 pipeline.py -- Master orchestration function.
 
-process(expenses, q=[], p=[], k=[], wage=None, check_wage=False)
+process(expenses, q=None, p=None, k=None, wage=None, check_wage=False)
   Runs: parse -> validate -> apply_q -> apply_p -> tag_k (EP3/EP4 path)
   Or:   parse -> validate                             (EP2 path)
 

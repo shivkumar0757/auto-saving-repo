@@ -16,7 +16,7 @@ router = APIRouter()
 
 
 @router.post("/transactions:validator", response_model=ValidatorResponse)
-def validate_transactions(body: ValidatorRequest):
+def validate_transactions(body: ValidatorRequest) -> ValidatorResponse:
     """
     EP2 -- Validates already-parsed transactions.
     Checks: negative -> duplicate -> wage (check_wage=True).

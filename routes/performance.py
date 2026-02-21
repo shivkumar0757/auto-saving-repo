@@ -26,7 +26,7 @@ def _format_uptime(uptime: timedelta) -> str:
 
 
 @router.get("/performance", response_model=PerformanceResponse)
-def performance():
+def performance() -> PerformanceResponse:
     """
     EP5 -- Returns system uptime, memory usage, and thread count.
     START_TIME and PROCESS are imported lazily to avoid circular imports.

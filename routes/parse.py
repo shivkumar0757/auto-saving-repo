@@ -10,7 +10,7 @@ router = APIRouter()
 
 
 @router.post("/transactions:parse", response_model=list[TransactionOut])
-def parse_transactions(expenses: list[Expense]):
+def parse_transactions(expenses: list[Expense]) -> list[TransactionOut]:
     """
     EP1 -- Receives raw expenses, returns enriched transactions with
     ceiling and remanent. Does not validate negative amounts (that is EP2).

@@ -218,12 +218,12 @@ class ReturnsRequest(BaseModel):
     def check_age(cls, v: object) -> int:
         if v is None:
             raise ValueError("Age is required and must be a whole number")
-        if not isinstance(v, int) or isinstance(v, bool):
-            # allow int-valued floats
-            if isinstance(v, float) and v == int(v):
-                v = int(v)
-            else:
-                raise ValueError("Age is required and must be a whole number")
+        if isinstance(v, bool):
+            raise ValueError("Age is required and must be a whole number")
+        if isinstance(v, float) and v == int(v):
+            v = int(v)
+        if not isinstance(v, int):
+            raise ValueError("Age is required and must be a whole number")
         val = int(v)
         if val <= 0:
             raise ValueError("Age must be a positive number")
@@ -291,7 +291,7 @@ class FilteredTransactionOut(BaseModel):
             amount=_round2(t.amount),
             ceiling=_round2(t.ceiling),
             remanent=_round2(t.remanent),
-            inkPeriod=getattr(t, "inkPeriod", False),
+            inkPeriod=t.inkPeriod,
         )
 
 
